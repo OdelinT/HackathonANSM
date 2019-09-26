@@ -10,21 +10,25 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PatientController : ControllerBase
+    public class DataController : ControllerBase
     {
-        // POST api/values
-        [HttpPost("{id}")]
-        public string Post(string id)
+        // Get api/Patient/values
+        [HttpGet("{ClassName}/{id}")]
+        public string Get(string ClassName, string id)
         {
-            Patient patient = Patient.GetPatientByNumeroSecuriteSociale(id);
-            if(patient != null)
+            if(ClassName == "Patient")
             {
-                return JsonConvert.SerializeObject(patient, Formatting.Indented);
+                Patient patient = Patient.GetPatientByNumeroSecuriteSociale(id);
+                if(patient != null)
+                {
+                    return JsonConvert.SerializeObject(patient, Formatting.Indented);
+                }
+                else
+                {
+                    return "Aucun patient trouvé pour le numéro de sécurité sociale " + id;
+                }
             }
-            else
-            {
-                return "Aucun patient trouvé pour le numéro de sécurité sociale " + id;
-            }
+            return "Aucune table ne correspond à " + ClassName;
         }
         
         // PUT api/values
