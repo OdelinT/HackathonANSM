@@ -5,10 +5,6 @@ using System.Linq;
 using System.Text;
 
 public class EtablissementDeSante {
-
-    public EtablissementDeSante() {
-    }
-
     public string NumeroFiness {get; set;}
 
     public string RaisonSociale {get; set;}
