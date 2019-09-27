@@ -29,7 +29,10 @@ public class ErreurMedicamenteuse {
     // On n'est pas certains de disposer directement du numéro RPPS, mais pour simplifier le POC, on va considérer que c'est le cas
     // données générées via =ALEA.ENTRE.BORNES(100000;999999)
     public string FauxRPPSSignalant {get; set;}
-
+    public static List<ErreurMedicamenteuse> GetAllEM()
+    {
+        return DataAccess.GetAllEM();
+    }
     public static List<ErreurMedicamenteuse> GetEMByRPPS(string RPPS)
     {
         return DataAccess.GetEMByRPPS(RPPS);

@@ -52,6 +52,27 @@ namespace API.Controllers
                         return JsonConvert.SerializeObject(DataAccess.GetMedicamentsFromApi().Where(m => m.NumeroBDM == id).FirstOrDefault(), Formatting.Indented);
                     }
                 }
+                else if(ClassName == "Ordonnance")
+                {
+                    Ordonnance ordonnance = Ordonnance.GetOrdonnanceById(id);
+                    if(ordonnance != null)
+                    {
+                        string result = JsonConvert.SerializeObject(ordonnance, Formatting.Indented);
+                        if(ordonnance.ExisteRisque())
+                        {
+                            result += ordonnance.MessageATransmettre();
+                            return result;
+                        }
+                        else
+                        {
+                            return result;
+                        }
+                    }
+                    else
+                    {
+                        return "Aucune ordonnance n'existe avec l'id " + id + ".";
+                    }
+                }
                 return "Aucune table ne correspond à " + ClassName;
             }
             catch(Exception ex)
