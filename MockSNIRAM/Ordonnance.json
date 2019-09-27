@@ -1,0 +1,16 @@
+{
+  "NumeroOrdonance": "123",
+  "Horodatage": "0001-01-01T00:00:00",
+  "patient": {
+    "NumeroSecuriteSociale": "123",
+    "Nom": "Doe",
+    "Prenom": "John",
+    "DateNaissance": "1970-01-01T00:00:00"
+  },
+  "medicaments": [
+    {
+      "NumeroBDM": "123",
+      "Nom": "Problématix"
+    }
+  ]
+}

@@ -15,6 +15,7 @@ public class Patient {
 
     public DateTime DateNaissance {get; set;}
 
+    [JsonProperty(NullValueHandling=NullValueHandling.Ignore)]
     public List<Ordonnance> ordonnances {get; set;}
 
     public static Patient GetPatientByNumeroSecuriteSociale(string NumeroSecuriteSociale)

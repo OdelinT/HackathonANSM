@@ -37,6 +37,20 @@ public class DataAccess {
         }
         return result;
     }
+    public static Medicament GetMedicamentById(string id)
+    {
+        
+        string json = File.ReadAllText("./MockSNIRAM/Medicament.json");
+        Medicament medicament =  JsonConvert.DeserializeObject<Medicament>(json);
+        if(medicament.NumeroBDM == id)
+        {
+            return medicament;
+        }
+        else
+        {
+            return null;
+        }
+    }
     public static Patient GetPatientDataFromNumeroSecuriteSociale(string NumeroSecuriteSociale)
     {
         string json = File.ReadAllText("./MockSNIRAM/Patient.json");

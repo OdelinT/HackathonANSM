@@ -56,7 +56,7 @@ namespace API.Controllers
             string destinationFile = "./MockSNIRAM/";
             if(ClassName == "Patient")
             {
-                destinationFile += "Patient.json";
+                destinationFile += ClassName + ".json";
                 Patient JohnDoe = new Patient(){
                     NumeroSecuriteSociale = "123",
                     Prenom = "John",
@@ -66,16 +66,31 @@ namespace API.Controllers
                 string json = JsonConvert.SerializeObject(JohnDoe, Formatting.Indented);
                 System.IO.File.WriteAllText(destinationFile, json);
             }
-            if(ClassName == "Ordonnance")
+            else if(ClassName == "Ordonnance")
             {
-                destinationFile += "Patient.json";
-                Patient JohnDoe = new Patient(){
-                    NumeroSecuriteSociale = "123",
-                    Prenom = "John",
-                    Nom = "Doe",
-                    DateNaissance = new DateTime(1970, 01, 01)
+                destinationFile += ClassName + ".json";
+                List<string> listeMedicamentsId = new List<string>();
+                listeMedicamentsId.Add("123");
+                List<Medicament> medicaments = new List<Medicament>();
+                medicaments.Add(DataAccess.GetMedicamentById("123"));
+                Ordonnance OrdonnanceJohnDoe = new Ordonnance(){
+                    NumeroOrdonance = "123",
+                    medicaments = medicaments,
+                    patient = Patient.GetPatientByNumeroSecuriteSociale("123")
                 };
-                string json = JsonConvert.SerializeObject(JohnDoe, Formatting.Indented);
+                string json = JsonConvert.SerializeObject(OrdonnanceJohnDoe, Formatting.Indented);
+                System.IO.File.WriteAllText(destinationFile, json);
+            }
+            else if(ClassName == "Medicament")
+            {
+                destinationFile += ClassName + ".json";
+                List<string> listeMedicamentsId = new List<string>();
+                listeMedicamentsId.Add("123");
+                Medicament medicamentQuiPoseProbleme = new Medicament(){
+                    NumeroBDM = "123",
+                    Nom = "Problématix"
+                };
+                string json = JsonConvert.SerializeObject(medicamentQuiPoseProbleme, Formatting.Indented);
                 System.IO.File.WriteAllText(destinationFile, json);
             }
             return "Mock data created in file " + destinationFile;
