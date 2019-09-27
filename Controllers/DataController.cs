@@ -41,6 +41,17 @@ namespace API.Controllers
                         return "Aucune donnée d'EM déclarées par le soignant " + id + " trouvées pour le numéro de sécurité sociale.";
                     }
                 }
+                else if(ClassName == "Medicament")
+                {
+                    if(id.ToLower() == "all")
+                    {
+                        return JsonConvert.SerializeObject(DataAccess.GetMedicamentsFromApi(), Formatting.Indented);
+                    }
+                    else
+                    {
+                        return JsonConvert.SerializeObject(DataAccess.GetMedicamentsFromApi().Where(m => m.NumeroBDM == id).FirstOrDefault(), Formatting.Indented);
+                    }
+                }
                 return "Aucune table ne correspond à " + ClassName;
             }
             catch(Exception ex)

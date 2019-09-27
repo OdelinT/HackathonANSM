@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using Newtonsoft.Json;
+using System.Net;
 
 
 public class DataAccess {
@@ -50,6 +51,27 @@ public class DataAccess {
         {
             return null;
         }
+    }
+    public static List<Medicament> GetMedicamentsFromApi()
+    {
+        string BDMedicamentUrl = "http://base-donnees-publique.medicaments.gouv.fr/telechargement.php?fichier=CIS_COMPO_bdpm.txt";
+        List<Medicament> medicaments = new List<Medicament>();
+        using (var client = new WebClient())
+        {
+            // client.DownloadFile(BDMedicamentUrl, "a.mpeg");
+            string document = client.DownloadString(BDMedicamentUrl);
+            string[] lines = document.Split("\n").Take(100).ToArray();
+            foreach(var line in lines)
+            {
+                string[] values = line.Split("\t");
+                medicaments.Add(new Medicament(){
+                    NumeroBDM = values[0],
+                    Nom = values[3]
+                });
+            }
+        }
+        medicaments.Add(GetMedicamentById("123"));
+        return medicaments;
     }
     public static Patient GetPatientDataFromNumeroSecuriteSociale(string NumeroSecuriteSociale)
     {
