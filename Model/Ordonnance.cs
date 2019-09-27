@@ -17,6 +17,6 @@ public class Ordonnance {
 
     public Patient patient {get; set;}
 
-    public HashSet<Medicament> medicaments {get; set;}
+    public List<Medicament> medicaments {get; set;}
 
 }

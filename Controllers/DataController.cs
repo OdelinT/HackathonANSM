@@ -16,19 +16,37 @@ namespace API.Controllers
         [HttpGet("{ClassName}/{id}")]
         public string Get(string ClassName, string id)
         {
-            if(ClassName == "Patient")
-            {
-                Patient patient = Patient.GetPatientByNumeroSecuriteSociale(id);
-                if(patient != null)
+            try{
+                if(ClassName == "Patient")
                 {
-                    return JsonConvert.SerializeObject(patient, Formatting.Indented);
+                    Patient patient = Patient.GetPatientByNumeroSecuriteSociale(id);
+                    if(patient != null)
+                    {
+                        return JsonConvert.SerializeObject(patient, Formatting.Indented);
+                    }
+                    else
+                    {
+                        return "Aucun patient trouvé pour le numéro de sécurité sociale " + id;
+                    }
                 }
-                else
+                else if(ClassName == "EM")
                 {
-                    return "Aucun patient trouvé pour le numéro de sécurité sociale " + id;
+                    List<ErreurMedicamenteuse> EMs = ErreurMedicamenteuse.GetEMByRPPS(id);
+                    if(EMs.Count > 0)
+                    {
+                        return JsonConvert.SerializeObject(EMs, Formatting.Indented);
+                    }
+                    else
+                    {
+                        return "Aucune donnée d'EM déclarées par le soignant " + id + " trouvées pour le numéro de sécurité sociale.";
+                    }
                 }
+                return "Aucune table ne correspond à " + ClassName;
             }
-            return "Aucune table ne correspond à " + ClassName;
+            catch(Exception ex)
+            {
+                return "Erreur au sein de l'appel API : " + ex.StackTrace;
+            }
         }
         
         // PUT api/values
@@ -37,6 +55,18 @@ namespace API.Controllers
         {
             string destinationFile = "./MockSNIRAM/";
             if(ClassName == "Patient")
+            {
+                destinationFile += "Patient.json";
+                Patient JohnDoe = new Patient(){
+                    NumeroSecuriteSociale = "123",
+                    Prenom = "John",
+                    Nom = "Doe",
+                    DateNaissance = new DateTime(1970, 01, 01)
+                };
+                string json = JsonConvert.SerializeObject(JohnDoe, Formatting.Indented);
+                System.IO.File.WriteAllText(destinationFile, json);
+            }
+            if(ClassName == "Ordonnance")
             {
                 destinationFile += "Patient.json";
                 Patient JohnDoe = new Patient(){
